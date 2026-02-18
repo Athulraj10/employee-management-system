@@ -1,0 +1,50 @@
+{
+  "name": "employee-management-backend",
+  "version": "1.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "swagger:gen": "node scripts/generate-swagger.js",
+    "seed:categories": "ts-node src/scripts/seed-categories.ts",
+    "seed:admin": "ts-node src/scripts/seed-admin.ts",
+    "import:performance": "ts-node src/scripts/import-performance-csv.ts",
+    "import:performance-december": "ts-node src/scripts/import-performance-december-csv.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^4.19.0",
+    "express-async-errors": "^3.1.1",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.13.0",
+    "reflect-metadata": "^0.2.2",
+    "routing-controllers": "^0.10.4",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "typeorm": "^0.3.20",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^22.10.1",
+    "@types/swagger-ui-express": "^4.1.6",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "prettier": "^3.3.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.0"
+  }
+}

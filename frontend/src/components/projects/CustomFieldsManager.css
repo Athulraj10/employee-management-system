@@ -1,0 +1,183 @@
+.custom-fields-manager {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
+}
+
+.fields-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.fields-header h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.add-field-btn {
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: var(--text-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.add-field-btn:hover {
+  background-color: var(--primary-dark);
+}
+
+.fields-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.field-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.field-label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.field-value {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.delete-field-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+  color: var(--text-primary);
+}
+
+.delete-field-btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.field-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.field-modal {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+}
+
+.field-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--primary-color);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.field-modal-header h3 {
+  margin: 0;
+  color: var(--text-white);
+  font-weight: 600;
+}
+
+.field-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.field-form-group {
+  margin-bottom: 1.5rem;
+}
+
+.field-form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.field-form-group input,
+.field-form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.field-form-group input:focus,
+.field-form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.field-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.field-modal-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.field-modal-actions .cancel-btn {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.field-modal-actions .save-btn {
+  background-color: var(--primary-color);
+  color: var(--text-white);
+}

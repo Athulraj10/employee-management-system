@@ -1,0 +1,385 @@
+/* Shared animations for all expandable sections */
+
+/* Slide down expand animation */
+@keyframes slideDownExpand {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 5000px;
+  }
+}
+
+/* Slide up collapse animation */
+@keyframes slideUpCollapse {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 5000px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+  }
+}
+
+/* Fade in scale animation */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Card slide in animation */
+@keyframes cardSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Grid fade in animation */
+@keyframes gridFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Expandable section base styles */
+.expandable-section {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  position: relative;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expandable-section.expanded {
+  max-height: 5000px;
+  opacity: 1;
+  transform: translateY(0);
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+
+.expandable-section.collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  padding: 0;
+  margin-top: 0;
+}
+
+/* Form expandable styles */
+.form-expandable {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-lg);
+  margin-top: 1rem;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  padding: 0;
+  position: relative;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              padding 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-expandable.expanded {
+  max-height: 5000px;
+  opacity: 1;
+  transform: translateY(0);
+  padding: 1.5rem;
+}
+
+
+.form-expandable.collapsed {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-20px);
+  padding: 0;
+}
+
+.inline-form-content {
+  animation: fadeInScale 0.4s ease-out;
+}
+
+/* Toggle button animation */
+.toggle-button {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.toggle-button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%) rotate(0deg);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.9rem;
+}
+
+.toggle-button.expanded::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Ripple effect for buttons */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple-effect:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Button animations */
+button, .btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active, .btn:active {
+  transform: translateY(0);
+}
+
+/* Card animations */
+.card, .project-card, .employee-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover, .project-card:hover, .employee-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Fade in animations for content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Cube loader animation for dropdowns */
+.loader {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader_cube {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 30px;
+}
+
+.loader_cube--glowing {
+  z-index: 2;
+  background-color: rgba(0, 210, 160, 0.2);
+  border: 2px solid rgba(74, 71, 209, 0.3);
+}
+
+.loader_cube--color {
+  z-index: 1;
+  filter: blur(2px);
+  background: var(--primary-gradient);
+  animation: loadtwo 2.5s ease-in-out infinite;
+}
+
+@keyframes loadtwo {
+  50% {
+    transform: rotate(-80deg);
+  }
+}
+
+/* Dropdown loader overlay */
+.dropdown-loader-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 10;
+  border-radius: var(--radius-lg);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.dropdown-loader-overlay.hidden {
+  display: none;
+}
+
+/* Compact loader for inline use */
+.loader-compact {
+  width: 60px;
+  height: 60px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+.loader-compact .loader_cube {
+  border-radius: 12px;
+}
+
+.loader-compact .loader_cube--glowing {
+  background-color: rgba(0, 210, 160, 0.15);
+  border: 1px solid rgba(74, 71, 209, 0.25);
+}
+
+.loader-compact .loader_cube--color {
+  filter: blur(1px);
+  background: var(--primary-gradient);
+}
+

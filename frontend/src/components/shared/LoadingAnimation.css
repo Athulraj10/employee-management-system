@@ -1,0 +1,246 @@
+/* WiFi-style loading animation */
+.wifi-loader {
+  --background: #e0f7ff;
+  --front-color: #4A47D1;
+  --back-color: #c3e8e0;
+  --text-color: #1f2933;
+  border-radius: 50px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  width: 64px;
+  height: 64px;
+}
+
+.wifi-loader-small {
+  width: 48px;
+  height: 48px;
+}
+
+.wifi-loader-medium {
+  width: 64px;
+  height: 64px;
+}
+
+.wifi-loader-large {
+  width: 80px;
+  height: 80px;
+}
+
+.wifi-loader svg {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wifi-loader svg circle {
+  position: absolute;
+  fill: none;
+  stroke-width: 6px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform: rotate(-100deg);
+  transform-origin: center;
+}
+
+.wifi-loader svg circle.back {
+  stroke: var(--back-color);
+}
+
+.wifi-loader svg circle.front {
+  stroke: var(--front-color);
+}
+
+.wifi-loader svg.circle-outer {
+  height: 86px;
+  width: 86px;
+}
+
+.wifi-loader-small svg.circle-outer {
+  height: 70px;
+  width: 70px;
+}
+
+.wifi-loader-large svg.circle-outer {
+  height: 102px;
+  width: 102px;
+}
+
+.wifi-loader svg.circle-outer circle {
+  stroke-dasharray: 62.75 188.25;
+}
+
+.wifi-loader svg.circle-outer circle.back {
+  animation: circle-outer135 1.8s ease infinite 0.3s;
+}
+
+.wifi-loader svg.circle-outer circle.front {
+  animation: circle-outer135 1.8s ease infinite 0.15s;
+}
+
+.wifi-loader svg.circle-middle {
+  height: 60px;
+  width: 60px;
+}
+
+.wifi-loader-small svg.circle-middle {
+  height: 44px;
+  width: 44px;
+}
+
+.wifi-loader-large svg.circle-middle {
+  height: 76px;
+  width: 76px;
+}
+
+.wifi-loader svg.circle-middle circle {
+  stroke-dasharray: 42.5 127.5;
+}
+
+.wifi-loader svg.circle-middle circle.back {
+  animation: circle-middle6123 1.8s ease infinite 0.25s;
+}
+
+.wifi-loader svg.circle-middle circle.front {
+  animation: circle-middle6123 1.8s ease infinite 0.1s;
+}
+
+.wifi-loader svg.circle-inner {
+  height: 34px;
+  width: 34px;
+}
+
+.wifi-loader-small svg.circle-inner {
+  height: 18px;
+  width: 18px;
+}
+
+.wifi-loader-large svg.circle-inner {
+  height: 50px;
+  width: 50px;
+}
+
+.wifi-loader svg.circle-inner circle {
+  stroke-dasharray: 22 66;
+}
+
+.wifi-loader svg.circle-inner circle.back {
+  animation: circle-inner162 1.8s ease infinite 0.2s;
+}
+
+.wifi-loader svg.circle-inner circle.front {
+  animation: circle-inner162 1.8s ease infinite 0.05s;
+}
+
+.wifi-loader .text {
+  position: absolute;
+  bottom: -40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: lowercase;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+  width: 100%;
+}
+
+.wifi-loader .text::before,
+.wifi-loader .text::after {
+  content: attr(data-text);
+}
+
+.wifi-loader .text::before {
+  color: var(--text-color);
+}
+
+.wifi-loader .text::after {
+  color: var(--front-color);
+  animation: text-animation76 3.6s ease infinite;
+  position: absolute;
+  left: 0;
+}
+
+@keyframes circle-outer135 {
+  0% {
+    stroke-dashoffset: 25;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 301;
+  }
+
+  80% {
+    stroke-dashoffset: 276;
+  }
+
+  100% {
+    stroke-dashoffset: 276;
+  }
+}
+
+@keyframes circle-middle6123 {
+  0% {
+    stroke-dashoffset: 17;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 204;
+  }
+
+  80% {
+    stroke-dashoffset: 187;
+  }
+
+  100% {
+    stroke-dashoffset: 187;
+  }
+}
+
+@keyframes circle-inner162 {
+  0% {
+    stroke-dashoffset: 9;
+  }
+
+  25% {
+    stroke-dashoffset: 0;
+  }
+
+  65% {
+    stroke-dashoffset: 106;
+  }
+
+  80% {
+    stroke-dashoffset: 97;
+  }
+
+  100% {
+    stroke-dashoffset: 97;
+  }
+}
+
+@keyframes text-animation76 {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  50% {
+    clip-path: inset(0);
+  }
+
+  100% {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
