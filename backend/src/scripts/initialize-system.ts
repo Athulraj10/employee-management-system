@@ -11,11 +11,9 @@ async function initializeSystem() {
   try {
     console.log('🚀 Initializing system...');
     
-    // Initialize database connection
     await initializeDatabase();
     console.log('✅ Database connected');
 
-    // Check and create admin user
     const userRepo = AppDataSource.getRepository(User);
     const authService = new AuthService();
 
@@ -46,7 +44,6 @@ async function initializeSystem() {
       console.log(`ℹ️  Admin user already exists: ${adminUsername}`);
     }
 
-    // Check and seed categories
     const categoryRepo = AppDataSource.getRepository(EmployeeCategory);
     const categories = [
       CategoryType.FRONTEND,
@@ -85,7 +82,6 @@ async function initializeSystem() {
   }
 }
 
-// Run if called directly
 if (require.main === module) {
   initializeSystem()
     .then(() => process.exit(0))

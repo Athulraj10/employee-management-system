@@ -27,7 +27,6 @@ export default function EditEmployeeModal({ isOpen, onClose, onSuccess, employee
   useEffect(() => {
     if (isOpen && employee) {
       loadCategories();
-      // Populate form with employee data
       const dateOfJoining = employee.dateOfJoining 
         ? new Date(employee.dateOfJoining).toISOString().split('T')[0]
         : '';

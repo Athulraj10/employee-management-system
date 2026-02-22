@@ -23,7 +23,6 @@ export default function EmployeeDetail() {
   const loadEmployeeData = async () => {
     try {
       setLoading(true);
-      // Use Promise.all for parallel data fetching
       const [employeeRes, timelineRes, performanceRes] = await Promise.all([
         emsApi.getEmployee(id!),
         emsApi.getEmployeeTimelineGrouped(id!),

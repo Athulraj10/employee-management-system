@@ -38,7 +38,6 @@ export class TimelineService {
 
     const events: TimelineEvent[] = [];
 
-    // Add experience entries
     for (const exp of experiences) {
       const duration = `${exp.years}y ${exp.months}m`;
       events.push({
@@ -57,7 +56,6 @@ export class TimelineService {
       });
     }
 
-    // Add project entries
     for (const proj of projects) {
       const endDate = proj.endDate || new Date();
       const startDate = new Date(proj.startDate);
@@ -81,7 +79,6 @@ export class TimelineService {
       });
     }
 
-    // Sort by date
     events.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     return events;
@@ -113,7 +110,6 @@ export class TimelineService {
       }),
     ]);
 
-    // Calculate category breakdown
     const categoryBreakdown: Record<string, { years: number; months: number; projects: number }> = {};
 
     for (const exp of experiences) {
@@ -133,7 +129,6 @@ export class TimelineService {
       categoryBreakdown[catName].projects += 1;
     }
 
-    // Normalize months
     for (const key in categoryBreakdown) {
       const totalMonths = categoryBreakdown[key].years * 12 + categoryBreakdown[key].months;
       categoryBreakdown[key].years = Math.floor(totalMonths / 12);

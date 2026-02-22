@@ -1,6 +1,5 @@
 import { AppDataSource } from '../../../infrastructure/database/data-source';
 import { PerformanceSnapshot, PerformanceMetric, EmployeePerformanceSummary } from '../entities';
-import { Employee } from '../../ems/entities/Employee.entity';
 import { performanceCrypto } from '../../../common/security/performance-crypto';
 import { getEnv } from '../../../common/config/env';
 import { PerformanceCalculationService } from './PerformanceCalculationService';
@@ -9,7 +8,6 @@ export class PerformanceService {
   private snapshotRepo = AppDataSource.getRepository(PerformanceSnapshot);
   private metricRepo = AppDataSource.getRepository(PerformanceMetric);
   private summaryRepo = AppDataSource.getRepository(EmployeePerformanceSummary);
-  private employeeRepo = AppDataSource.getRepository(Employee);
   private calculationService = new PerformanceCalculationService();
 
   async createSnapshot(data: {
@@ -33,7 +31,6 @@ export class PerformanceService {
       aggregationPeriod: data.aggregationPeriod || 'daily',
     });
 
-    // Encrypt or store plain based on environment
     if (data.projectCompletionCount !== undefined) {
       snapshot.projectCompletionCount = isProd
         ? performanceCrypto.encrypt(data.projectCompletionCount.toString())
@@ -179,13 +176,12 @@ export class PerformanceService {
   }): Promise<EmployeePerformanceSummary> {
     const isProd = getEnv().APP_ENV === 'prod';
 
-    // Auto-calculate performance if requested
     if (data.autoCalculate) {
       const startDate = new Date(data.summaryDate);
-      startDate.setDate(1); // Start of month
+      startDate.setDate(1);
       const endDate = new Date(data.summaryDate);
       endDate.setMonth(endDate.getMonth() + 1);
-      endDate.setDate(0); // End of month
+      endDate.setDate(0);
 
       const calculated = await this.calculationService.calculatePerformanceScore(
         data.employeeId,

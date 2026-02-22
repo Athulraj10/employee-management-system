@@ -31,7 +31,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'ems_pms',
-  synchronize: !isProd, // Use migrations in prod
+  synchronize: !isProd,
   logging: process.env.TYPEORM_LOGGING === 'true',
     entities: [
       Employee,

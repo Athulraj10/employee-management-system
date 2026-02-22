@@ -45,7 +45,6 @@ export default function AttendanceManagement() {
       const response = await emsApi.getProjects();
       const projectsList = response.data.projects || response.data || [];
       
-      // Load employee count for each project
       const projectsWithCounts = await Promise.all(
         projectsList.map(async (project: any) => {
           try {
@@ -78,7 +77,6 @@ export default function AttendanceManagement() {
       const response = await emsApi.getEmployees({ includeProjects: true });
       let employeesList = response.data?.employees || response.data || [];
       
-      // Filter employees by project
       employeesList = employeesList.filter((emp: any) =>
         emp.projects?.some((p: any) => 
           (p.projectId === projectId || p.project?.id === projectId) &&
@@ -109,14 +107,12 @@ export default function AttendanceManagement() {
             attendanceMap[employee.id] = response.data[0];
           }
         } catch (error) {
-          // Ignore errors for individual employees
         }
       })
     );
     
     setAttendanceData(attendanceMap);
     
-    // Calculate stats
     const total = employeesList.length;
     const checkedIn = Object.values(attendanceMap).filter((a: any) => a.checkIn).length;
     const checkedOut = Object.values(attendanceMap).filter((a: any) => a.checkOut).length;
@@ -143,7 +139,6 @@ export default function AttendanceManagement() {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.2);
     } catch (error) {
-      // Ignore audio errors
     }
   };
 
@@ -179,7 +174,6 @@ export default function AttendanceManagement() {
         if (existingAttendance?.checkOut) {
           data.checkOut = existingAttendance.checkOut;
         }
-        // Check if late
         if (isLateCheckIn(currentTime)) {
           data.isHalfDay = true;
         }
@@ -202,7 +196,6 @@ export default function AttendanceManagement() {
       const lateWarning = type === 'checkIn' && isLateCheckIn(currentTime) ? ' (⚠️ Half Day)' : '';
       setMessage(`✓ ${type === 'checkIn' ? 'Check-in' : 'Check-out'} marked for ${employee.name} at ${currentTime}${lateWarning}!`);
       
-      // Reload attendance for this employee
       const response = await attendanceApi.getEmployeeAttendance(employeeId, {
         startDate: selectedDate,
         endDate: selectedDate,
@@ -457,7 +450,7 @@ export default function AttendanceManagement() {
                         className={`quick-mark-btn checkin ${isAnimatingEmployee ? 'animating' : ''}`}
                         onClick={() => handleQuickMark(employee.id, 'checkIn')}
                         disabled={loading || !!attendance?.checkIn}
-                        title={attendance?.checkIn ? "Check-in already marked for today. Available tomorrow." : "Mark check-in with current time"}
+                        title={attendance?.checkIn ? 'Check-in already marked for today. Available tomorrow.' : 'Mark check-in with current time'}
                       >
                         <IoEnter className="btn-icon" />
                         <span className="text-tertiary">Check-In</span>

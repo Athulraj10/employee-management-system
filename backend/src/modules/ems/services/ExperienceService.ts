@@ -34,7 +34,6 @@ export class ExperienceService {
 
     const saved = await this.experienceRepo.save(experience);
 
-    // Recalculate total experience
     await this.employeeService.recalculateTotalExperience(data.employeeId);
 
     await this.auditRepo.save({
@@ -70,7 +69,6 @@ export class ExperienceService {
     const oldValue = JSON.stringify(experience);
     Object.assign(experience, data);
 
-    // Recalculate years and months
     const { years, months } = calculateExperience(
       experience.fromDate,
       experience.toDate || new Date()
@@ -80,7 +78,6 @@ export class ExperienceService {
 
     const saved = await this.experienceRepo.save(experience);
 
-    // Recalculate total experience
     await this.employeeService.recalculateTotalExperience(experience.employeeId);
 
     await this.auditRepo.save({
@@ -126,7 +123,6 @@ export class ExperienceService {
 
     await this.experienceRepo.remove(experience);
 
-    // Recalculate total experience
     await this.employeeService.recalculateTotalExperience(employeeId);
 
     await this.auditRepo.save({

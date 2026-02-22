@@ -84,7 +84,6 @@ export default function AddEmployeeModal({ isOpen, onClose, onSuccess }: AddEmpl
       });
       onSuccess();
       onClose();
-      // Reset form
       setFormData({
         name: '',
         email: '',

@@ -17,7 +17,6 @@ export function registerEmsRoutes() {
   const categoryController = new CategoryController();
   const customFieldController = new CustomFieldController();
 
-  // Employee routes
   router.post('/employees', (req, res) => employeeController.createEmployee(req, res));
   router.get('/employees', (req, res) => employeeController.getEmployees(req, res));
   router.get('/employees/:id', (req, res) => employeeController.getEmployee(req, res));
@@ -25,7 +24,6 @@ export function registerEmsRoutes() {
   router.post('/employees/:id/deactivate', (req, res) => employeeController.deactivateEmployee(req, res));
   router.post('/employees/:id/activate', (req, res) => employeeController.activateEmployee(req, res));
 
-  // Project routes
   router.post('/projects', (req, res) => projectController.createProject(req, res));
   router.get('/projects', (req, res) => projectController.getProjects(req, res));
   router.get('/projects/:id', (req, res) => projectController.getProject(req, res));
@@ -36,29 +34,24 @@ export function registerEmsRoutes() {
   router.post('/projects/assignments/:id/relocate', (req, res) => projectController.relocateEmployee(req, res));
   router.get('/projects/:projectId/employees', (req, res) => projectController.getProjectEmployees(req, res));
 
-  // Experience routes
   router.post('/experience', (req, res) => experienceController.createExperience(req, res));
   router.get('/employees/:employeeId/experience', (req, res) => experienceController.getEmployeeExperience(req, res));
   router.put('/experience/:id', (req, res) => experienceController.updateExperience(req, res));
   router.delete('/experience/:id', (req, res) => experienceController.deleteExperience(req, res));
 
-  // Timeline routes
   router.get('/employees/:employeeId/timeline', (req, res) => timelineController.getEmployeeTimeline(req, res));
   router.get('/employees/:employeeId/timeline/grouped', (req, res) => timelineController.getEmployeeTimelineGrouped(req, res));
 
-  // Categories
   router.get('/categories', (req, res) => categoryController.getCategories(req, res));
   router.post('/categories', (req, res) => categoryController.createCategory(req, res));
   router.put('/categories/:id', (req, res) => categoryController.updateCategory(req, res));
   router.delete('/categories/:id', (req, res) => categoryController.deleteCategory(req, res));
 
-  // Custom Fields
   router.post('/employees/:employeeId/custom-fields', (req, res) => customFieldController.addCustomField(req, res));
   router.get('/employees/:employeeId/custom-fields', (req, res) => customFieldController.getCustomFields(req, res));
   router.put('/custom-fields/:id', (req, res) => customFieldController.updateCustomField(req, res));
   router.delete('/custom-fields/:id', (req, res) => customFieldController.deleteCustomField(req, res));
 
-  // Admin routes
   router.get('/admin/dashboard', (req, res) => adminController.getDashboardStats(req, res));
   router.get('/admin/categories/:categoryId/employees', (req, res) => adminController.getEmployeesByCategory(req, res));
   router.get('/admin/projects/:projectId/employees', (req, res) => adminController.getProjectEmployees(req, res));

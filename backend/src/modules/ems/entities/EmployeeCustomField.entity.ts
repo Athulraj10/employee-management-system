@@ -26,7 +26,7 @@ export class EmployeeCustomField {
   fieldLabel!: string;
 
   @Column({ type: 'varchar', length: 50, name: 'field_type' })
-  fieldType!: string; // text, number, date, boolean, etc.
+  fieldType!: string;
 
   @Column({ type: 'text', name: 'field_value', nullable: true })
   fieldValue!: string | null;

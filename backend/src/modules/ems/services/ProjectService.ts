@@ -72,7 +72,6 @@ export class ProjectService {
       throw new Error('Project not found');
     }
 
-    // Get active employee assignments
     const activeAssignments = project.employeeProjects.filter(
       (ep) => !ep.endDate || new Date(ep.endDate) >= new Date()
     );
@@ -84,7 +83,6 @@ export class ProjectService {
       };
     }
 
-    // If force delete, end all active assignments first
     if (activeAssignments.length > 0 && force) {
       for (const assignment of activeAssignments) {
         assignment.endDate = new Date();
@@ -169,7 +167,6 @@ export class ProjectService {
     startDate: Date;
     endDate?: Date;
   }, changedBy: string): Promise<EmployeeProject> {
-    // Verify category exists
     const category = await this.categoryRepo.findOne({ where: { id: data.categoryId } });
     if (!category) {
       throw new Error('Category not found');
@@ -200,7 +197,6 @@ export class ProjectService {
     changedBy: string,
     notes?: string
   ): Promise<{ oldAssignment: EmployeeProject; newAssignment: EmployeeProject }> {
-    // Get current assignment
     const currentAssignment = await this.employeeProjectRepo.findOne({
       where: { id: employeeProjectId },
       relations: ['employee', 'project', 'category'],
@@ -210,12 +206,10 @@ export class ProjectService {
       throw new Error('Employee project assignment not found');
     }
 
-    // End current assignment
     const oldValue = JSON.stringify(currentAssignment);
     currentAssignment.endDate = new Date();
     const endedAssignment = await this.employeeProjectRepo.save(currentAssignment);
 
-    // Create new assignment
     const newAssignment = this.employeeProjectRepo.create({
       employeeId: currentAssignment.employeeId,
       projectId: newProjectId,
@@ -226,7 +220,6 @@ export class ProjectService {
     });
     const savedNewAssignment = await this.employeeProjectRepo.save(newAssignment);
 
-    // Audit log for ending old assignment
     await this.auditRepo.save({
       employeeId: currentAssignment.employeeId,
       entityType: AuditEntityType.EMPLOYEE_PROJECT,
@@ -238,7 +231,6 @@ export class ProjectService {
       notes: `Relocated from project: ${currentAssignment.projectId} to project: ${newProjectId}. ${notes || ''}`,
     });
 
-    // Audit log for new assignment
     await this.auditRepo.save({
       employeeId: currentAssignment.employeeId,
       entityType: AuditEntityType.EMPLOYEE_PROJECT,
@@ -269,7 +261,7 @@ export class ProjectService {
       technologiesUsed: string;
       startDate: Date;
       endDate: Date | null;
-      projectId: string; // Allow project change
+      projectId: string;
     }>,
     changedBy: string
   ): Promise<EmployeeProject> {
@@ -280,7 +272,6 @@ export class ProjectService {
 
     const oldValue = JSON.stringify(employeeProject);
     
-    // If projectId is being changed, treat it as relocation
     if (data.projectId && data.projectId !== employeeProject.projectId) {
       return (await this.relocateEmployee(id, data.projectId, changedBy)).newAssignment;
     }

@@ -5,15 +5,12 @@ interface ApiError extends Error {
   details?: unknown;
 }
 
-// Centralized error handler to keep APIs idempotent and predictable
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(
   err: ApiError,
   _req: Request,
   res: Response,
   _next: NextFunction
 ) {
-  // eslint-disable-next-line no-console
   console.error('API error:', err);
 
   const status = err.statusCode && err.statusCode >= 400 && err.statusCode < 600 ? err.statusCode : 500;

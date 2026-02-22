@@ -51,7 +51,7 @@ export default function EditProjectModal({ project, isOpen, onClose }: EditProje
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.2);
     } catch (error) {
-      // Ignore audio errors
+      console.error('Error playing success sound:', error);
     }
   };
 

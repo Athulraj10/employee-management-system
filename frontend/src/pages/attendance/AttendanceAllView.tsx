@@ -99,7 +99,6 @@ export default function AttendanceAllView() {
         if (existingAttendance?.checkOut) {
           data.checkOut = existingAttendance.checkOut;
         }
-        // Check if late
         if (isLateCheckIn(currentTime)) {
           data.isHalfDay = true;
         }
@@ -119,7 +118,6 @@ export default function AttendanceAllView() {
       }
 
       loadData();
-      // Play success sound
       try {
         const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
         const oscillator = audioContext.createOscillator();
@@ -133,7 +131,6 @@ export default function AttendanceAllView() {
         oscillator.start(audioContext.currentTime);
         oscillator.stop(audioContext.currentTime + 0.2);
       } catch (e) {
-        // Ignore audio errors
       }
     } catch (error: any) {
       alert(error.response?.data?.error || 'Failed to mark attendance');
@@ -144,7 +141,6 @@ export default function AttendanceAllView() {
     try {
       const response = await attendanceApi.getEmployeeHistory(employeeId, 15);
       const history = response.data || [];
-      // Group by project if available
       setAttendanceHistory(history);
     } catch (error) {
       console.error('Failed to load history:', error);
@@ -437,7 +433,6 @@ export default function AttendanceAllView() {
                 <h3>Last 15 Days History (Grouped by Date & Project)</h3>
                 <div className="history-grouped">
                   {Object.entries(groupedHistory).map(([date, records]: [string, any]) => {
-                    // Group records by project within each date
                     const projectGroups = records.reduce((acc: any, record: any) => {
                       const projectKey = record.project?.name || 'No Project';
                       if (!acc[projectKey]) {

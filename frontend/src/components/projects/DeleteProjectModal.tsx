@@ -77,7 +77,6 @@ export default function DeleteProjectModal({ project, isOpen, onClose, onSuccess
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.3);
     } catch (error) {
-      // Ignore audio errors
     }
   };
 
@@ -92,7 +91,6 @@ export default function DeleteProjectModal({ project, isOpen, onClose, onSuccess
     setDeleting(true);
 
     try {
-      // Relocate employees first if needed
       if (employees.length > 0) {
         await Promise.all(
           employees.map(async (employee) => {
@@ -111,7 +109,6 @@ export default function DeleteProjectModal({ project, isOpen, onClose, onSuccess
         );
       }
 
-      // Delete project
       await emsApi.deleteProject(project.id, true);
       onSuccess();
       onClose();
@@ -145,11 +142,7 @@ export default function DeleteProjectModal({ project, isOpen, onClose, onSuccess
               
               <div className="employees-relocation-list">
                 {employees.map((employee) => {
-                  const assignment = employee.projects.find((p: any) => 
-                    (p.projectId === project.id || p.project?.id === project.id) &&
-                    (!p.endDate || new Date(p.endDate) >= new Date())
-                  );
-
+                
                   return (
                     <div key={employee.id} className="employee-relocation-item">
                       <div className="employee-info">

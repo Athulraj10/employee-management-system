@@ -76,7 +76,6 @@ export class CategoryController {
         return res.status(404).json({ error: 'Category not found' });
       }
 
-      // Soft delete by setting active to false
       category.active = false;
       await this.categoryRepo.save(category);
       res.status(204).send();

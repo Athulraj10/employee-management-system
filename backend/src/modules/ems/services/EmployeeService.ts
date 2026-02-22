@@ -43,10 +43,8 @@ export class EmployeeService {
 
     const saved = await this.employeeRepo.save(employee);
 
-    // Calculate initial total experience
     await this.recalculateTotalExperience(saved.id);
 
-    // Audit log
     await this.auditRepo.save({
       entityType: AuditEntityType.EMPLOYEE,
       entityId: saved.id,
@@ -55,7 +53,7 @@ export class EmployeeService {
       changedBy,
     });
 
-    return this.getEmployeeById(saved.id);
+    return this.getEmployeeById(saved.id) as Promise<Employee>;
   }
 
   async updateEmployee(
@@ -100,12 +98,10 @@ export class EmployeeService {
 
     const saved = await this.employeeRepo.save(employee);
 
-    // Recalculate if date of joining changed
     if (data.dateOfJoining) {
       await this.recalculateTotalExperience(saved.id);
     }
 
-    // Audit log
     await this.auditRepo.save({
       employeeId: id,
       entityType: AuditEntityType.EMPLOYEE,
@@ -116,7 +112,7 @@ export class EmployeeService {
       changedBy,
     });
 
-    return this.getEmployeeById(saved.id);
+    return this.getEmployeeById(saved.id) as Promise<Employee>;
   }
 
   async getEmployeeById(id: string): Promise<Employee | null> {
@@ -196,12 +192,10 @@ export class EmployeeService {
 
     let totalMonths = 0;
 
-    // If no experience history, calculate from date of joining
     if (histories.length === 0) {
       const { years, months } = calculateExperience(employee.dateOfJoining, new Date());
-      totalMonths = years * 12 + months;
+      totalMonths = years * 12 + months;  
     } else {
-      // Calculate from experience history entries
       for (const history of histories) {
         const { years, months } = calculateExperience(history.fromDate, history.toDate || new Date());
         history.years = years;

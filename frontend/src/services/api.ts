@@ -9,7 +9,6 @@ const api = axios.create({
   },
 });
 
-// Add token to requests if available
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -18,9 +17,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// EMS APIs
 export const emsApi = {
-  // Employees
   getEmployees: (filters?: any) => {
     const params = { ...filters };
     if (filters?.includeProjects) {
@@ -34,7 +31,6 @@ export const emsApi = {
   activateEmployee: (id: string) => api.post(`/ems/employees/${id}/activate`),
   deactivateEmployee: (id: string) => api.post(`/ems/employees/${id}/deactivate`),
 
-      // Projects
       getProjects: (filters?: any) => api.get('/ems/projects', { params: filters }),
       getProject: (id: string) => api.get(`/ems/projects/${id}`),
       createProject: (data: any) => api.post('/ems/projects', data),
@@ -44,48 +40,39 @@ export const emsApi = {
       updateEmployeeAssignment: (id: string, data: any) => api.put(`/ems/projects/assignments/${id}`, data),
       relocateEmployee: (id: string, data: { newProjectId: string; notes?: string }) => api.post(`/ems/projects/assignments/${id}/relocate`, data),
 
-  // Experience
   getEmployeeExperience: (employeeId: string) => api.get(`/ems/employees/${employeeId}/experience`),
   createExperience: (data: any) => api.post('/ems/experience', data),
   updateExperience: (id: string, data: any) => api.put(`/ems/experience/${id}`, data),
   deleteExperience: (id: string) => api.delete(`/ems/experience/${id}`),
 
-  // Timeline
   getEmployeeTimeline: (employeeId: string) => api.get(`/ems/employees/${employeeId}/timeline`),
   getEmployeeTimelineGrouped: (employeeId: string) => api.get(`/ems/employees/${employeeId}/timeline/grouped`),
 
-  // Categories
   getCategories: (includeInactive?: boolean) => api.get('/ems/categories', { params: { includeInactive } }),
   createCategory: (data: any) => api.post('/ems/categories', data),
   updateCategory: (id: string, data: any) => api.put(`/ems/categories/${id}`, data),
   deleteCategory: (id: string) => api.delete(`/ems/categories/${id}`),
 
-  // Admin
   getDashboardStats: () => api.get('/ems/admin/dashboard'),
   getAuditLogs: (filters?: any) => api.get('/ems/admin/audit-logs', { params: filters }),
   exportEmployees: (filters?: any) => api.get('/ems/admin/export/employees', { params: filters, responseType: 'blob' }),
 };
 
-// PMS APIs
 export const pmsApi = {
-  // Snapshots
   createSnapshot: (data: any) => api.post('/pms/snapshots', data),
   getEmployeeSnapshots: (employeeId: string, filters?: any) =>
     api.get(`/pms/employees/${employeeId}/snapshots`, { params: filters }),
 
-  // Metrics
   createMetric: (data: any) => api.post('/pms/metrics', data),
   getEmployeeMetrics: (employeeId: string, filters?: any) =>
     api.get(`/pms/employees/${employeeId}/metrics`, { params: filters }),
 
-  // Summaries
   createOrUpdateSummary: (data: any) => api.post('/pms/summaries', data),
   getEmployeeSummaries: (employeeId: string, filters?: any) =>
     api.get(`/pms/employees/${employeeId}/summaries`, { params: filters }),
   getEmployeeSummary: (employeeId: string, summaryDate?: Date) =>
     api.get(`/pms/employees/${employeeId}/summary`, { params: { summaryDate } }),
 
-  // Analytics
   getEmployeePerformanceOverview: (employeeId: string) =>
     api.get(`/pms/employees/${employeeId}/overview`),
   getPerformanceTrend: (employeeId: string, months?: number) =>
@@ -99,20 +86,17 @@ export const pmsApi = {
   getAdminDashboardAnalytics: (filters?: any) =>
     api.get('/pms/admin/dashboard-analytics', { params: filters }),
 
-  // Config
   getConfig: (key: string) => api.get(`/pms/config/${key}`),
   setConfig: (key: string, value: any) => api.put(`/pms/config/${key}`, { value }),
   getAllConfigs: (category?: string) => api.get('/pms/config', { params: { category } }),
 };
 
-// Auth APIs
 export const authApi = {
   login: (username: string, password: string) => api.post('/auth/login', { username, password }),
   register: (data: any) => api.post('/auth/register', data),
   verify: () => api.get('/auth/verify'),
 };
 
-// Attendance APIs
 export const attendanceApi = {
   markAttendance: (data: any) => api.post('/attendance/mark', data),
   updateAttendance: (id: string, data: any) => api.put(`/attendance/${id}`, data),
@@ -128,7 +112,6 @@ export const attendanceApi = {
     api.get(`/attendance/projects/${projectId}`, { params: filters }),
 };
 
-// Ticket APIs
 export const ticketApi = {
   createTicket: (data: any) => api.post('/tickets/tickets', data),
   getAllTickets: (filters?: any) => api.get('/tickets/tickets', { params: filters }),
@@ -136,7 +119,6 @@ export const ticketApi = {
   updateTicket: (id: string, data: any) => api.put(`/tickets/tickets/${id}`, data),
 };
 
-// Custom Fields APIs
 export const customFieldApi = {
   addCustomField: (employeeId: string, data: any) => api.post(`/ems/employees/${employeeId}/custom-fields`, data),
   getCustomFields: (employeeId: string) => api.get(`/ems/employees/${employeeId}/custom-fields`),

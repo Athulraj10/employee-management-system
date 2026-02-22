@@ -23,16 +23,12 @@ export class PerformanceCalculationService {
       this.employeeRepo.findOne({ where: { id: employeeId } }),
     ]);
 
-    // Calculate attendance score (0-100)
     const attendanceScore = this.calculateAttendanceScore(attendanceStats);
 
-    // Calculate ticket score (0-100)
     const ticketScore = this.calculateTicketScore(tickets);
 
-    // Calculate productivity score based on hours worked
     const productivityScore = this.calculateProductivityScore(attendanceStats);
 
-    // Weighted overall score
     const overallScore = (
       attendanceScore * 0.4 +
       ticketScore * 0.3 +
@@ -102,7 +98,7 @@ export class PerformanceCalculationService {
   }
 
   private calculateTicketScore(tickets: any): number {
-    if (tickets.total === 0) return 100; // No tickets = perfect score
+    if (tickets.total === 0) return 100;
 
     const resolutionRate = tickets.total > 0 ? (tickets.resolved + tickets.closed) / tickets.total * 100 : 0;
     const openPenalty = (tickets.open / tickets.total) * 20;
@@ -111,7 +107,6 @@ export class PerformanceCalculationService {
   }
 
   private calculateProductivityScore(stats: any): number {
-    // Based on hours worked (assuming 8 hours per day is standard)
     const expectedHours = stats.presentDays * 8;
     if (expectedHours === 0) return 0;
 

@@ -30,7 +30,7 @@ export class PerformanceAnalyticsService {
       .map(s => ({
         date: s.snapshotDate.toISOString().split('T')[0],
         score: s.overallPerformanceRating
-          ? parseFloat(isProd ? performanceCrypto.decrypt(s.overallPerformanceRating) : s.overallPerformanceRating)
+          ? parseFloat(isProd ? performanceCrypto.decrypt(s.overallPerformanceRating as string) : s.overallPerformanceRating as string) 
           : 0,
       }));
   }
@@ -53,7 +53,7 @@ export class PerformanceAnalyticsService {
       ? performanceCrypto.decrypt(summary.categoryWiseContribution)
       : summary.categoryWiseContribution;
 
-    return JSON.parse(decrypted);
+    return JSON.parse(decrypted as string);
   }
 
   async getTimeSpentPerProject(employeeId: string): Promise<Array<{ projectId: string; days: number }>> {
@@ -74,7 +74,7 @@ export class PerformanceAnalyticsService {
       ? performanceCrypto.decrypt(summary.timeSpentPerProject)
       : summary.timeSpentPerProject;
 
-    const data = JSON.parse(decrypted);
+    const data = JSON.parse(decrypted as string);
     return Object.entries(data).map(([projectId, days]) => ({
       projectId,
       days: typeof days === 'number' ? days : parseFloat(days as string),
@@ -98,7 +98,7 @@ export class PerformanceAnalyticsService {
         }
 
         const value = parseFloat(
-          isProd ? performanceCrypto.decrypt(metric.metricValue) : metric.metricValue
+          isProd ? performanceCrypto.decrypt(metric.metricValue as string) : metric.metricValue as string
         );
 
         skillData[skillName].push({
@@ -131,7 +131,7 @@ export class PerformanceAnalyticsService {
 
     const isProd = getEnv().APP_ENV === 'prod';
     const overallScore = summary?.overallPerformanceScore
-      ? parseFloat(isProd ? performanceCrypto.decrypt(summary.overallPerformanceScore) : summary.overallPerformanceScore)
+      ? parseFloat(isProd ? performanceCrypto.decrypt(summary.overallPerformanceScore as string) : summary.overallPerformanceScore as string)
       : 0;
 
     return {
@@ -170,13 +170,12 @@ export class PerformanceAnalyticsService {
 
     const isProd = getEnv().APP_ENV === 'prod';
 
-    // Get latest summary per employee
     const employeeScores = new Map<string, { name: string; score: number }>();
 
     for (const summary of summaries) {
       if (!employeeScores.has(summary.employeeId)) {
         const score = summary.overallPerformanceScore
-          ? parseFloat(isProd ? performanceCrypto.decrypt(summary.overallPerformanceScore) : summary.overallPerformanceScore)
+          ? parseFloat(isProd ? performanceCrypto.decrypt(summary.overallPerformanceScore as string) : summary.overallPerformanceScore as string)
           : 0;
 
         employeeScores.set(summary.employeeId, {
@@ -197,10 +196,8 @@ export class PerformanceAnalyticsService {
       .slice(0, 10)
       .map(s => ({ employeeId: '', name: s.name, score: s.score }));
 
-    // Simplified category productivity (would need more complex logic in real implementation)
     const categoryProductivity: Record<string, number> = {};
 
-    // Simplified team trend
     const teamTrend: Array<{ date: string; avgScore: number }> = [];
 
     return {

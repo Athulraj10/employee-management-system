@@ -32,7 +32,6 @@ export default function EmployeeRelocationModal({
     try {
       const response = await emsApi.getProjects();
       const projectsList = response.data.projects || response.data || [];
-      // Filter out current project
       setProjects(projectsList.filter((p: any) => p.id !== currentProject.id));
     } catch (error) {
       console.error('Failed to load projects:', error);
@@ -57,7 +56,6 @@ export default function EmployeeRelocationModal({
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.2);
     } catch (error) {
-      // Ignore audio errors
     }
   };
 
@@ -95,7 +93,6 @@ export default function EmployeeRelocationModal({
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.15);
     } catch (error) {
-      // Ignore audio errors
     }
   };
 

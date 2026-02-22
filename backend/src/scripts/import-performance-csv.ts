@@ -28,12 +28,10 @@ function parseCSV(filePath: string): CSVRow[] {
   const lines = content.split('\n').filter(line => line.trim());
   const rows: CSVRow[] = [];
 
-  // Skip header
   for (let i = 1; i < lines.length; i++) {
     const line = lines[i].trim();
     if (!line) continue;
 
-    // Parse CSV line (handling quoted fields with commas)
     const fields: string[] = [];
     let currentField = '';
     let inQuotes = false;
@@ -78,36 +76,32 @@ async function importPerformanceData() {
     const summaryRepo = AppDataSource.getRepository(EmployeePerformanceSummary);
     const attendanceRepo = AppDataSource.getRepository(Attendance);
 
-    // Read CSV file
     const csvPath = path.join(__dirname, '../../Performance_Evaluation_Sprint_17 (January 1-31).csv');
     if (!fs.existsSync(csvPath)) {
       throw new Error(`CSV file not found at: ${csvPath}`);
     }
 
     const csvData = parseCSV(csvPath);
-    console.log(`📊 Found ${csvData.length} records to import`);
+    console.log(` Found ${csvData.length} records to import`);
 
     const isProd = getEnv().APP_ENV === 'prod';
 
-    // Process each row
     for (const row of csvData) {
       if (!row.employeeName || !row.team) continue;
 
-      console.log(`\n📝 Processing: ${row.employeeName} (${row.team})`);
+      console.log(`\n Processing: ${row.employeeName} (${row.team})`);
 
-      // Find or create employee
       let employee = await employeeRepo.findOne({
         where: { name: row.employeeName },
       });
 
       if (!employee) {
-        // Create employee if not found
         const employeeId = `EMP${Date.now().toString().slice(-6)}`;
         employee = employeeRepo.create({
           name: row.employeeName,
           email: `${row.employeeName.toLowerCase().replace(/\s+/g, '.')}@gnx.com`,
           employeeId,
-          dateOfJoining: new Date('2024-01-01'), // Default date
+          dateOfJoining: new Date('2024-01-01'),
           currentDesignation: 'Developer',
           status: 'Active' as any,
         });
@@ -115,7 +109,6 @@ async function importPerformanceData() {
         console.log(`  ✓ Created employee: ${row.employeeName}`);
       }
 
-      // Find or create project (team = project)
       let project = await projectRepo.findOne({
         where: { name: row.team },
       });
@@ -131,7 +124,6 @@ async function importPerformanceData() {
         console.log(`  ✓ Created project: ${row.team}`);
       }
 
-      // Assign employee to project if not already assigned
       const existingAssignment = await employeeProjectRepo.findOne({
         where: {
           employeeId: employee.id,
@@ -140,7 +132,6 @@ async function importPerformanceData() {
       });
 
       if (!existingAssignment) {
-        // Get a default category (Backend or Frontend based on team)
         const defaultCategory = await categoryRepo.findOne({
           where: { name: row.team.includes('Frontend') ? CategoryType.FRONTEND : CategoryType.BACKEND },
         }) || await categoryRepo.findOne({ where: { name: CategoryType.FULL_STACK } });
@@ -158,9 +149,8 @@ async function importPerformanceData() {
         }
       }
 
-      // Create attendance history for January (all present)
       const year = 2024;
-      const month = 0; // January (0-indexed)
+      const month = 0;
       const daysInMonth = 31;
       let attendanceCreated = 0;
 
@@ -168,7 +158,6 @@ async function importPerformanceData() {
         const attendanceDate = new Date(year, month, day);
         const dateStr = attendanceDate.toISOString().split('T')[0];
 
-        // Check if attendance already exists
         const existingAttendance = await attendanceRepo.findOne({
           where: {
             employeeId: employee.id,
@@ -178,7 +167,6 @@ async function importPerformanceData() {
         });
 
         if (!existingAttendance) {
-          // Standard work hours: 9 AM to 6 PM
           const checkIn = '09:00:00';
           const checkOut = '18:00:00';
           const hoursWorked = 9;
@@ -202,14 +190,12 @@ async function importPerformanceData() {
 
       console.log(`  ✓ Created ${attendanceCreated} attendance records for Jan 1-31 (${daysInMonth - attendanceCreated} already existed)`);
 
-      // Create performance snapshots for each day of January (1-31)
       const monthlyScore = row.score;
 
       let snapshotsCreated = 0;
       for (let day = 1; day <= daysInMonth; day++) {
         const snapshotDate = new Date(year, month, day);
         
-        // Check if snapshot already exists
         const existingSnapshot = await snapshotRepo.findOne({
           where: {
             employeeId: employee.id,
@@ -238,7 +224,6 @@ async function importPerformanceData() {
 
       console.log(`  ✓ Created ${snapshotsCreated} daily snapshots for Jan 1-31 (${daysInMonth - snapshotsCreated} already existed)`);
 
-      // Create monthly summary for January 31
       const summaryDate = new Date(year, month, 31);
       const existingSummary = await summaryRepo.findOne({
         where: {
@@ -259,7 +244,7 @@ async function importPerformanceData() {
           scoreOutOf10: row.score,
           month: 'January 2024',
           team: row.team,
-          project: row.team, // Team = Project
+          project: row.team,
         };
 
         const performanceTrendData = isProd

@@ -26,7 +26,6 @@ export default function ProjectList() {
       const response = await emsApi.getProjects();
       const projectsList = response.data.projects || response.data || [];
       
-      // Load employee count for each project
       const projectsWithCounts = await Promise.all(
         projectsList.map(async (project: any) => {
           try {
@@ -89,7 +88,6 @@ export default function ProjectList() {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.15);
     } catch (error) {
-      // Ignore audio errors
     }
   };
 
@@ -194,7 +192,6 @@ export default function ProjectList() {
             setEmployeeToRelocate(null);
             loadProjects();
             if (selectedProject) {
-              // Reload project details
               emsApi.getProject(selectedProject.id).then((response) => {
                 setSelectedProject(response.data);
               });
@@ -242,7 +239,6 @@ function ProjectEmployeesView({ project, onRelocateEmployee, onClose }: any) {
         )
       );
 
-      // Get full project assignment details
       const employeesWithAssignments = await Promise.all(
         employeesList.map(async (emp: any) => {
           const assignment = emp.projects.find((p: any) => 

@@ -9,21 +9,17 @@ export function registerPmsRoutes() {
   const analyticsController = new PerformanceAnalyticsController();
   const configController = new PerformanceConfigController();
 
-  // Performance snapshots
   router.post('/snapshots', (req, res) => performanceController.createSnapshot(req, res));
   router.get('/snapshots/:id', (req, res) => performanceController.getSnapshot(req, res));
   router.get('/employees/:employeeId/snapshots', (req, res) => performanceController.getEmployeeSnapshots(req, res));
 
-  // Performance metrics
   router.post('/metrics', (req, res) => performanceController.createMetric(req, res));
   router.get('/employees/:employeeId/metrics', (req, res) => performanceController.getEmployeeMetrics(req, res));
 
-  // Performance summaries
   router.post('/summaries', (req, res) => performanceController.createOrUpdateSummary(req, res));
   router.get('/employees/:employeeId/summaries', (req, res) => performanceController.getEmployeeSummaries(req, res));
   router.get('/employees/:employeeId/summary', (req, res) => performanceController.getSummary(req, res));
 
-  // Analytics
   router.get('/employees/:employeeId/overview', (req, res) => analyticsController.getEmployeePerformanceOverview(req, res));
   router.get('/employees/:employeeId/trend', (req, res) => analyticsController.getPerformanceTrend(req, res));
   router.get('/employees/:employeeId/category-contribution', (req, res) => analyticsController.getCategoryWiseContribution(req, res));
@@ -31,7 +27,6 @@ export function registerPmsRoutes() {
   router.get('/employees/:employeeId/skill-growth', (req, res) => analyticsController.getSkillGrowthOverTime(req, res));
   router.get('/admin/dashboard-analytics', (req, res) => analyticsController.getAdminDashboardAnalytics(req, res));
 
-  // Configuration
   router.get('/config', (req, res) => configController.getAllConfigs(req, res));
   router.get('/config/:key', (req, res) => configController.getConfig(req, res));
   router.put('/config/:key', (req, res) => configController.setConfig(req, res));

@@ -116,7 +116,6 @@ export class AdminService {
 
     const employees = await query.getMany();
 
-    // Simple CSV generation
     const headers = ['Employee ID', 'Name', 'Email', 'Designation', 'Status', 'Total Experience (Years)', 'Categories', 'Date of Joining'];
     const rows = employees.map(emp => [
       emp.employeeId,

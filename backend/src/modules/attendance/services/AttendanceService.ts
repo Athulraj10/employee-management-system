@@ -25,7 +25,6 @@ export class AttendanceService {
       date: data.date 
     };
     
-    // If projectId is provided, use it in the lookup; otherwise find any attendance for that date
     if (data.projectId) {
       whereClause.projectId = data.projectId;
     } else {
@@ -37,7 +36,6 @@ export class AttendanceService {
     });
 
     if (existing) {
-      // Update existing attendance
       Object.assign(existing, {
         type: data.type,
         checkIn: data.checkIn !== undefined ? data.checkIn : existing.checkIn,
@@ -51,7 +49,6 @@ export class AttendanceService {
       if (data.checkIn && data.checkOut) {
         existing.hoursWorked = this.calculateHours(data.checkIn, data.checkOut);
       } else if (data.isHalfDay && existing.checkIn) {
-        // Half day is typically 4 hours
         existing.hoursWorked = 4;
       }
 
@@ -274,7 +271,7 @@ export class AttendanceService {
     const inTime = inHours * 60 + inMinutes;
     const outTime = outHours * 60 + outMinutes;
     const hours = Math.max(0, (outTime - inTime) / 60);
-    return Math.round(hours * 100) / 100; // Round to 2 decimal places
+    return Math.round(hours * 100) / 100;
   }
 }
 

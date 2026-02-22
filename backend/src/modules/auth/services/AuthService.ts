@@ -49,11 +49,9 @@ export class AuthService {
       throw new Error('Invalid credentials');
     }
 
-    // Update last login
     user.lastLogin = new Date();
     await this.userRepo.save(user);
 
-    // Generate JWT token
     const token = jwt.sign(
       { userId: user.id, role: user.role, username: user.username },
       process.env.JWT_SECRET || 'your-secret-key-change-in-production',

@@ -19,7 +19,6 @@ export default function AdminDashboard() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
-      // Use Promise.all for parallel data fetching
       const [statsRes, analyticsRes] = await Promise.all([
         emsApi.getDashboardStats(),
         pmsApi.getAdminDashboardAnalytics(),
@@ -35,25 +34,20 @@ export default function AdminDashboard() {
 
   const loadTimeBasedCharts = async () => {
     try {
-      // Get last 30 days data
       const endDate = new Date();
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - 30);
 
-      // Load employees for attendance data
       const employeesResponse = await emsApi.getEmployees({ includeProjects: true });
       const allEmployees = employeesResponse.data?.employees || employeesResponse.data || [];
 
-      // Aggregate attendance data by date
       const attendanceByDate: Record<string, { date: string; present: number; remote: number; leave: number; total: number }> = {};
       
-      // Aggregate performance data by date
       const performanceByDate: Record<string, { date: string; avgScore: number; count: number }> = {};
 
       await Promise.all(
         allEmployees.map(async (employee: any) => {
           try {
-            // Get attendance data
             const attendanceResponse = await attendanceApi.getEmployeeAttendance(employee.id, {
               startDate: startDate.toISOString().split('T')[0],
               endDate: endDate.toISOString().split('T')[0],
@@ -76,7 +70,6 @@ export default function AdminDashboard() {
               attendanceByDate[dateStr].total++;
             });
 
-            // Get performance data
             const performanceResponse = await pmsApi.getEmployeeSnapshots(employee.id, {
               startDate: startDate.toISOString().split('T')[0],
               endDate: endDate.toISOString().split('T')[0],
@@ -94,12 +87,10 @@ export default function AdminDashboard() {
               performanceByDate[dateStr].count++;
             });
           } catch (error) {
-            // Ignore errors for individual employees
           }
         })
       );
 
-      // Convert to arrays and calculate averages
       const attendanceArray = Object.values(attendanceByDate)
         .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
         .map(item => ({
@@ -120,7 +111,6 @@ export default function AdminDashboard() {
       setAttendanceTrend(attendanceArray);
       setPerformanceTrend(performanceArray);
 
-      // Combined time-based data
       const combinedData = attendanceArray.map((att, idx) => ({
         date: att.date,
         attendance: att.total,
@@ -159,7 +149,6 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Time-based Charts Section */}
       <div className="charts-section">
         <div className="chart-card">
           <h2>Attendance Trend (Last 30 Days)</h2>

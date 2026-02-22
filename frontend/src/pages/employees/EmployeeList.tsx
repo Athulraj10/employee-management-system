@@ -49,7 +49,6 @@ export default function EmployeeList() {
       const response = await emsApi.getProjects();
       const projectsList = response.data.projects || response.data || [];
       
-      // Load employee count for each project
       const projectsWithCounts = await Promise.all(
         projectsList.map(async (project: any) => {
           try {
@@ -82,7 +81,6 @@ export default function EmployeeList() {
       const response = await emsApi.getEmployees({ includeProjects: true });
       let employeesList = response.data?.employees || response.data || [];
       
-      // Filter employees by project
       employeesList = employeesList.filter((emp: any) =>
         emp.projects?.some((p: any) => 
           (p.projectId === projectId || p.project?.id === projectId) &&
@@ -100,11 +98,9 @@ export default function EmployeeList() {
 
   const handleProjectClick = async (projectId: string) => {
     if (selectedProject === projectId) {
-      // If clicking the same project, collapse it
       setSelectedProject(null);
       setEmployees([]);
     } else {
-      // Load employees for the selected project and show below
       setSelectedProject(projectId);
       await loadEmployeesForProject(projectId);
     }

@@ -57,8 +57,8 @@ export default function PerformanceDashboard() {
     try {
       setLoading(true);
       const now = new Date();
-      const lastYear = new Date(now.getFullYear() - 1, 0, 1); // Start of last year
-      const endOfLastYear = new Date(now.getFullYear() - 1, 11, 31); // End of last year
+      const lastYear = new Date(now.getFullYear() - 1, 0, 1);
+      const endOfLastYear = new Date(now.getFullYear() - 1, 11, 31);
       
       const employeesResponse = await emsApi.getEmployees({ includeProjects: true });
       const allEmployees = employeesResponse.data?.employees || employeesResponse.data || [];
@@ -74,7 +74,6 @@ export default function PerformanceDashboard() {
             const summaries = summariesResponse.data || [];
             if (summaries.length === 0) return null;
             
-            // Calculate average score for the year
             const scores = summaries
               .map((s: any) => parseFloat(s.overallPerformanceScore?.toString() || '0'))
               .filter((score: number) => score > 0);
@@ -83,9 +82,8 @@ export default function PerformanceDashboard() {
             
             const avgScore = scores.reduce((sum: number, score: number) => sum + score, 0) / scores.length;
             
-            // Filter based on performanceFilter
             if (performanceFilter === 'well' && avgScore < 6) {
-              return null; // Well performance = score >= 6
+              return null;
             }
             
             return {
@@ -116,7 +114,6 @@ export default function PerformanceDashboard() {
       const response = await emsApi.getProjects();
       const projectsList = response.data.projects || response.data || [];
       
-      // Load employee count and avg performance for each project
       const projectsWithStats = await Promise.all(
         projectsList.map(async (project: any) => {
           try {
@@ -129,7 +126,6 @@ export default function PerformanceDashboard() {
               )
             );
 
-            // Calculate average performance
             let avgScore = 0;
             if (projectEmployees.length > 0) {
               const scores = await Promise.all(
@@ -171,7 +167,6 @@ export default function PerformanceDashboard() {
       const response = await pmsApi.getAdminDashboardAnalytics();
       const topPerformersList = response.data?.topPerformers || [];
       
-      // Get current month's top performers
       const now = new Date();
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
@@ -217,7 +212,6 @@ export default function PerformanceDashboard() {
       const employeesResponse = await emsApi.getEmployees({ includeProjects: true });
       const allEmployees = employeesResponse.data?.employees || employeesResponse.data || [];
       
-      // Get last 30 days attendance data grouped by project
       const endDate = new Date();
       const startDate = new Date();
       startDate.setDate(startDate.getDate() - 30);
@@ -255,13 +249,11 @@ export default function PerformanceDashboard() {
                 }
               });
             } catch (error) {
-              // Ignore errors
             }
           }
         })
       );
       
-      // Aggregate by date for each project
       const aggregatedData: Record<string, any[]> = {};
       Object.keys(projectWiseAttendance).forEach(projectId => {
         const project = projects.find(p => p.id === projectId);
@@ -298,7 +290,6 @@ export default function PerformanceDashboard() {
         )
       );
 
-      // Load performance data for each employee
       const employeesWithPerformance = await Promise.all(
         employeesList.map(async (employee: any) => {
           try {
@@ -348,11 +339,9 @@ export default function PerformanceDashboard() {
 
   const handleProjectClick = async (projectId: string) => {
     if (selectedProject === projectId) {
-      // If clicking the same project, collapse it
       setSelectedProject(null);
       setEmployees([]);
     } else {
-      // Load employees for the selected project and show below
       setSelectedProject(projectId);
       await loadEmployeesForProject(projectId);
     }
@@ -363,8 +352,7 @@ export default function PerformanceDashboard() {
     setEmployees([]);
   };
 
-  const getPerformanceColor = (score: number): string => {
-    // Map performance score to CSS variables so colors are controlled in index.css
+  const getPerformanceColor = (score: number): string => {  
     if (score >= 8) return 'var(--performance-excellent)';
     if (score >= 7) return 'var(--performance-good)';
     if (score >= 6) return 'var(--performance-average)';
@@ -382,11 +370,9 @@ export default function PerformanceDashboard() {
 
   const toggleEmployeeDetail = async (employee: any) => {
     if (expandedEmployeeId === employee.id) {
-      // Collapse
       setExpandedEmployeeId(null);
       setLoadingEmployeeDetails({ ...loadingEmployeeDetails, [employee.id]: false });
     } else {
-      // Expand - load data if not already loaded
       setExpandedEmployeeId(employee.id);
       if (!employeeDetailData[employee.id]) {
         setLoadingEmployeeDetails({ ...loadingEmployeeDetails, [employee.id]: true });
@@ -427,7 +413,6 @@ export default function PerformanceDashboard() {
       <div className="dashboard-header">
         <h1>Performance Dashboard</h1>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-          {/* Sprint Format Toggle */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-primary)' }}>
               Sprint Format:
@@ -449,7 +434,6 @@ export default function PerformanceDashboard() {
             </button>
           </div>
 
-          {/* Performance Filter */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-primary)' }}>
               View:
@@ -481,12 +465,12 @@ export default function PerformanceDashboard() {
         </div>
       </div>
 
-      {/* Yearly Performance View */}
       {(performanceFilter === 'overall' || performanceFilter === 'well') && (
         <div className="charts-section">
           <div className="chart-card">
             <h2>
-              {performanceFilter === 'overall' ? 'Overall Performance - Last Year' : 'Well Performance - Last Year (Score ≥ 6)'}
+              {performanceFilter === 'overall' ? 'Overall Performance - Last Year' : 'Well Performance - Last Year (Score ≥ 6)'} {/* TODO: Translate */}
+             
             </h2>
             {loading ? (
               <div className="loading-container">
@@ -534,7 +518,6 @@ export default function PerformanceDashboard() {
 
       {performanceFilter === 'all' ? (
         <>
-          {/* Top Performers of the Month */}
           {topPerformers.length > 0 && (
             <div className="charts-section">
               <div className="chart-card">
@@ -559,7 +542,6 @@ export default function PerformanceDashboard() {
             </div>
           )}
 
-          {/* Time-based Data by Project */}
           {Object.keys(projectWiseData).length > 0 && (
             <div className="charts-section">
               <div className="chart-card">
@@ -600,7 +582,6 @@ export default function PerformanceDashboard() {
                 <div className="empty-state">No projects found.</div>
               ) : (
                 <>
-                  {/* Horizontal Scrollable Project Tabs */}
                   <div className="projects-tabs-container">
                     <div className="projects-tabs-scroll">
                       {projects.map((project) => {
@@ -625,7 +606,6 @@ export default function PerformanceDashboard() {
                     </div>
                   </div>
 
-                  {/* Selected Project Details - Full Width Below */}
                   {selectedProject && (() => {
                     const project = projects.find(p => p.id === selectedProject);
                     if (!project) return null;
@@ -655,7 +635,6 @@ export default function PerformanceDashboard() {
                             </div>
                           </div>
 
-                          {/* Employees Section */}
                           <div className="project-employees-section">
                             <h3>Team Members</h3>
                             {loading ? (
@@ -793,7 +772,6 @@ export default function PerformanceDashboard() {
   );
 }
 
-// Component for rendering employee detail content inline
 function EmployeeDetailContent({ detailData }: { detailData: any }) {
   const [activeTab, setActiveTab] = useState<'overview' | 'attendance' | 'tickets'>('overview');
 

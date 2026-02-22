@@ -15,7 +15,6 @@ import { buildSwaggerSpec } from './swagger';
 import { initializeDatabase } from './infrastructure/database/data-source';
 
 export async function createServer() {
-  // Initialize database
   await initializeDatabase();
 
   const app = express();
@@ -29,23 +28,19 @@ export async function createServer() {
   );
   app.use(json());
 
-  // Health check
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
   });
 
-  // Swagger
   const swaggerSpec = buildSwaggerSpec();
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-  // Modular routes
   app.use('/api/auth', registerAuthRoutes());
   app.use('/api/ems', registerEmsRoutes());
   app.use('/api/pms', registerPmsRoutes());
   app.use('/api/attendance', registerAttendanceRoutes());
   app.use('/api/tickets', registerTicketRoutes());
 
-  // Global error handler
   app.use(errorHandler);
 
   return app;

@@ -27,7 +27,7 @@ export class User {
   email!: string;
 
   @Column({ type: 'varchar', length: 255 })
-  password!: string; // Hashed password
+  password!: string;
 
   @Column({
     type: 'enum',

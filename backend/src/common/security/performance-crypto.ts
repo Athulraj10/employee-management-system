@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { loadConfig } from '../config/env';
 
 const ALGO = 'aes-256-gcm';
-const IV_LENGTH = 12; // GCM recommended IV length
+const IV_LENGTH = 12;
 
 export class PerformanceCryptoService {
   private readonly env = loadConfig().env;
@@ -54,7 +54,6 @@ export class PerformanceCryptoService {
     if (cipherText === null || cipherText === undefined) return null;
 
     if (!this.isProd()) {
-      // In dev, values are stored as plaintext; try to parse JSON but fall back
       try {
         return JSON.parse(cipherText) as T;
       } catch {
@@ -87,7 +86,6 @@ export class PerformanceCryptoService {
   }
 }
 
-// Singleton instance used across PMS module
 export const performanceCrypto = new PerformanceCryptoService();
 
 

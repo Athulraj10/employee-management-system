@@ -56,7 +56,7 @@ export default function EmployeePerformanceDetailModal({
     try {
       const endDate = new Date();
       const startDate = new Date();
-      startDate.setDate(startDate.getDate() - 30); // Last 30 days
+      startDate.setDate(startDate.getDate() - 30);
 
       const response = await attendanceApi.getEmployeeAttendance(employee.id, {
         startDate: startDate.toISOString().split('T')[0],
@@ -70,11 +70,9 @@ export default function EmployeePerformanceDetailModal({
 
   const loadTicketsHistory = async () => {
     try {
-      // Try employee-specific endpoint first
       const response = await ticketApi.getEmployeeTickets(employee.id);
       setTicketsHistory(response.data || []);
     } catch (error) {
-      // Fallback to all tickets and filter
       try {
         const altResponse = await ticketApi.getAllTickets();
         const allTickets = altResponse.data?.tickets || altResponse.data || [];
