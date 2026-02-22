@@ -120,7 +120,7 @@ export class PerformanceService {
 
     const metric = this.metricRepo.create({
       employeeId: data.employeeId,
-      categoryId: data.categoryId,
+      categoryId: data.categoryId || undefined,
       metricDate: data.metricDate,
       metricName: data.metricName,
       aggregationPeriod: data.aggregationPeriod || 'daily',
@@ -129,7 +129,7 @@ export class PerformanceService {
         : data.metricValue.toString(),
     });
 
-    return this.metricRepo.save(metric);
+    return this.metricRepo.save(metric) as unknown as Promise<PerformanceMetric>;
   }
 
   async getMetricsByEmployee(
@@ -311,7 +311,7 @@ export class PerformanceService {
 
     return {
       ...metric,
-      metricValue: performanceCrypto.decrypt(metric.metricValue),
+      metricValue: performanceCrypto.decrypt(metric.metricValue) as string,
     };
   }
 
