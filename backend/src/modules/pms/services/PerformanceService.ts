@@ -117,7 +117,6 @@ export class PerformanceService {
     aggregationPeriod?: string;
   }): Promise<PerformanceMetric> {
     const isProd = getEnv().APP_ENV === 'prod';
-
     const metric = this.metricRepo.create({
       employeeId: data.employeeId,
       categoryId: data.categoryId || undefined,
